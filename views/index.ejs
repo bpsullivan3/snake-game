@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<head>
+    <title>JavaScript Snake</title>
+    <link rel=stylesheet id=style type=text/css href="css/main-snake.css" />
+</head>
+
+<body>
+    <header id="header-wrapper">
+        <h1>Retro Snake Game</h1>
+        <img width="50px;" src="snake.svg">
+    </header>
+
+
+    <section id="instructions">
+        <p><strong>Instructions</strong>: Use your arrow keys to move the yellow block and "eat" the red block. The snake will
+            grow in length the more blocks it eats. If the snake touches a wall or itself it's game over!</p>
+        <p>Login/register on the sidebar in the right to chat with other players. The highest scores are displayed below. You
+            can always pause the game by clicking your spacebar.</p>
+    </section>
+
+    <section id="game-area" tabindex="0">
+    </section>
+
+    <section id="chat">
+        <h2>Chat</h2>
+
+        <div id="login-container">
+            <h3 class="title">What's your nickname?</h3>
+            <input id="username-input" type="text" maxlength="14" />
+        </div>
+
+        <div id="chat-container">
+            <div class="chatArea">
+                <ul class="messages"></ul>
+            </div>
+            <input id="message-input" type="text" placeholder="Message goes here">
+        </div>
+
+    </section>
+
+    <section id="high-scores">
+        <h2>High Scores</h2>
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Score</th>
+                <th>Rank</th>
+            </tr>
+            <tr>
+                <td>agomez</td>
+                <td>212</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>perez</td>
+                <td>201</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>tom</td>
+                <td>150</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>agomez</td>
+                <td>212</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>perez</td>
+                <td>201</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>tom</td>
+                <td>150</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <td>agomez</td>
+                <td>212</td>
+                <td>7</td>
+            </tr>
+            <tr>
+                <td>perez</td>
+                <td>201</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>tom</td>
+                <td>150</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>tom</td>
+                <td>150</td>
+                <td>10</td>
+            </tr>
+
+        </table>
+    </section>
+
+    <section id="ad">
+
+    </section>
+
+
+    <div id="mode-wrapper" style="display:none;">Select which mode you would like to play in.<br /><button id="Easy">Easy</button><br /><button id="Medium">Medium</button><br
+        /><button id="Difficult">Difficult</button></div>
+    <button id="high-score" style="display:none;">Get your current high score for this game.</button>
+    <!-- <footer>
+
+        <h2>Credits:</h2> Icons made by <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a> from
+        <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"
+            title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+    </footer> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/snake.js"></script>
+    <script type="text/javascript">
+        var mySnakeBoard = new SNAKE.Board({
+            boardContainer: "game-area",
+            fullScreen: false,
+            width: 500,
+            height: 600
+        });
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>
