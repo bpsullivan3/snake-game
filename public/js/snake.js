@@ -328,11 +328,45 @@ SNAKE.Snake = SNAKE.Snake || (function () {
         */
         me.handleDeath = function () {
             function recordScore() {
-                var highScore = localStorage.jsSnakeHighScore;
-                if (highScore == undefined) localStorage.setItem('jsSnakeHighScore', me.snakeLength);
-                if (me.snakeLength > highScore) {
-                    alert('Congratulations! You have beaten your previous high score, which was ' + highScore + '.');
-                    localStorage.setItem('jsSnakeHighScore', me.snakeLength);
+                var username = $('#username-input').val();
+                var score = me.snakeLength;
+                var userExists = false;
+
+                if (username != "") {
+                    if (localStorage.length > 0) {
+                        for (i in localStorage) {
+                            if (username == i) {
+                                userExists = true;
+                            }
+                        }
+                        if (userExists) {
+                            console.log("Existing user")
+                            for (i in localStorage) {
+                                if (username == i) {
+                                    if (score > localStorage[i]) {
+                                        alert(`Congrats ${i}! You have a new high score of ${score} compared to your previous of ${localStorage[i]}`);
+                                        localStorage.setItem(username, score);
+                                    }
+                                }
+                            }
+                        } else {
+                            //Create new user
+                            console.log("Create new user")
+                            localStorage.setItem(username, score);
+                        }
+
+                        $.ajax({
+                            method: "POST",
+                            url: "/",
+                            data: localStorage
+                        })
+                            .done(function (msg) {
+                                console.log("Local storage data sent to server: " + msg);
+                            });
+                    } else {
+                        //if no user exists
+                        localStorage.setItem(username, score);
+                    }
                 }
             }
             recordScore();

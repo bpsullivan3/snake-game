@@ -211,6 +211,9 @@ $(function () {
         updateTyping();
     });
 
+    //detect new high score here
+
+
     // Click events
 
     // Focus input when clicking anywhere on login page
@@ -263,6 +266,11 @@ $(function () {
     socket.on('stop typing', (data) => {
         removeChatTyping(data);
     });
+
+    //When a user has a new high score
+    socket.on('new high score', {
+
+    })
 
     socket.on('disconnect', () => {
         log('you have been disconnected');

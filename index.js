@@ -67,8 +67,30 @@ io.on('connection', function (socket) {
     });
 });
 
+let highScores = [];
 
-app.get('/', (req, res) => res.render('index.ejs'));
+app.get('/', (req, res) => {
+    console.log(highScores);
+    res.render('index.ejs', { highScores: highScores });
+    highScores = [];
+});
+
+
+app.post('/', (req, res) => {
+
+    let data = req.body;
+    console.log(data);
+
+    if (data) {
+        for (i in data) {
+            highScores.push([i, Number(data[i])]);
+        }
+    }
+
+    highScores.sort((a, b) => { return b[1] - a[1] });
+    res.status(200).send(JSON.stringify(highScores));
+    
+})
 
 server.listen(port, () => console.log(`Snake game listening on port ${port}!`));
 

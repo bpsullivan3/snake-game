@@ -41,64 +41,30 @@
 
     <section id="high-scores">
         <h2>High Scores</h2>
-        <table>
-            <tr>
-                <th>Username</th>
-                <th>Score</th>
-                <th>Rank</th>
-            </tr>
-            <tr>
-                <td>agomez</td>
-                <td>212</td>
-                <td>1</td>
-            </tr>
-            <tr>
-                <td>perez</td>
-                <td>201</td>
-                <td>2</td>
-            </tr>
-            <tr>
-                <td>tom</td>
-                <td>150</td>
-                <td>3</td>
-            </tr>
-            <tr>
-                <td>agomez</td>
-                <td>212</td>
-                <td>4</td>
-            </tr>
-            <tr>
-                <td>perez</td>
-                <td>201</td>
-                <td>5</td>
-            </tr>
-            <tr>
-                <td>tom</td>
-                <td>150</td>
-                <td>6</td>
-            </tr>
-            <tr>
-                <td>agomez</td>
-                <td>212</td>
-                <td>7</td>
-            </tr>
-            <tr>
-                <td>perez</td>
-                <td>201</td>
-                <td>8</td>
-            </tr>
-            <tr>
-                <td>tom</td>
-                <td>150</td>
-                <td>9</td>
-            </tr>
-            <tr>
-                <td>tom</td>
-                <td>150</td>
-                <td>10</td>
-            </tr>
-
-        </table>
+        <%if (highScores.length > 0) { %>
+            <table class="table">
+                <tr>
+                    <th>Username</th>
+                    <th>Score</th>
+                    <th>Rank</th>
+                </tr>
+                <% for (i = 0; i < highScores.length; i++) { %>
+                    <tr>
+                        <td>
+                            <%= highScores[i][0] %>
+                        </td>
+                        <td>
+                            <%= highScores[i][1] %>
+                        </td>
+                        <td>
+                            <%= i+1 %>
+                        </td>
+                    </tr>
+                    <% } %>
+            </table>
+            <% } else {%>
+                <p style="text-align:center">No scores to display.</p>
+                <% } %>
     </section>
 
     <section id="ad">
