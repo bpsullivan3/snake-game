@@ -345,26 +345,22 @@ SNAKE.Snake = SNAKE.Snake || (function () {
                                 if (username == i) {
                                     if (score > localStorage[i]) {
                                         alert(`Congrats ${i}! You have a new high score of ${score} compared to your previous of ${localStorage[i]}`);
+                                        console.log(`${username} has new high score!`)
                                         localStorage.setItem(username, score);
+                                        var socket = io();
+
+                                        socket.emit('new highscore', localStorage);
+                                    } else {
+                                        console.log(`${username} did not have high score.`)
                                     }
                                 }
                             }
                         } else {
-                            //Create new user
-                            console.log("Create new user")
+                            console.log(`${username} added.`)
                             localStorage.setItem(username, score);
                         }
-
-                        $.ajax({
-                            method: "POST",
-                            url: "/",
-                            data: localStorage
-                        })
-                            .done(function (msg) {
-                                console.log("Local storage data sent to server: " + msg);
-                            });
                     } else {
-                        //if no user exists
+                        console.log(`${username} added.`)
                         localStorage.setItem(username, score);
                     }
                 }

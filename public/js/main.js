@@ -16,6 +16,9 @@ $(function () {
     var $loginPage = $('#login-container'); // The login page
     var $chatPage = $('#chat-container'); // The chatroom page
 
+    var $table = $('#high-scores'); //the high score table
+    var $tableHeader = $('#table-header');
+
     // Prompt for setting a username
     var username;
     var connected = false;
@@ -188,6 +191,30 @@ $(function () {
         return COLORS[index];
     }
 
+    let litDB = localStorage.litDB;
+
+
+    const updateTable = data => {
+        console.log(data);
+        console.log('detected table change');
+        if (localStorage.length > 0) {
+            for (i = 0; i < data.length; i++) {
+                $('tbody').append("<tr><td>" + data[i].username + "</td><td>" + data[i].score + "</td><td>" + (i + 1) + "</td></tr>");
+            }
+        } else {
+            console.log('did not detect any users in localstorage');
+            $table.append('<p style="text-align:center">No scores to display.</p>')
+        }
+    }
+
+
+    if (localStorage.length > 0) {
+        $table.css("display", "");
+    } else {
+        $table.css("display", "none")
+        $('#high-scores').append('<p style="text-align:center">No scores to display.</p>')
+    }
+
     // Keyboard events
 
     $window.keydown(event => {
@@ -225,8 +252,6 @@ $(function () {
     $inputMessage.click(() => {
         $inputMessage.focus();
     });
-
-    // Socket events
 
     // Whenever the server emits 'login', log the login message
     socket.on('login', (data) => {
@@ -268,8 +293,8 @@ $(function () {
     });
 
     //When a user has a new high score
-    socket.on('new high score', {
-
+    socket.on('new highscore', data => {
+        updateTable(data);
     })
 
     socket.on('disconnect', () => {
@@ -288,3 +313,4 @@ $(function () {
     });
 
 });
+

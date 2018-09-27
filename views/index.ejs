@@ -41,30 +41,28 @@
 
     <section id="high-scores">
         <h2>High Scores</h2>
-        <%if (highScores.length > 0) { %>
-            <table class="table">
-                <tr>
-                    <th>Username</th>
-                    <th>Score</th>
-                    <th>Rank</th>
-                </tr>
-                <% for (i = 0; i < highScores.length; i++) { %>
+        <table class="table">
+           
+            <tbody>
+                <% if (highScores.length > 0) { %>
+                    <tr id="table-header">
+                            <th>Username</th>
+                            <th>Score</th>
+                            <th>Rank</th>
+                        </tr>
+                    <% for (i = 0; i < highScores.length; i++) { %>
                     <tr>
-                        <td>
-                            <%= highScores[i][0] %>
-                        </td>
-                        <td>
-                            <%= highScores[i][1] %>
-                        </td>
-                        <td>
-                            <%= i+1 %>
-                        </td>
-                    </tr>
+                        <td><%= highScores[i].username %></td>   
+                        <td><%= highScores[i].score %></td>    
+                        <td><%= ++i %></td>     
+                    <tr>
                     <% } %>
-            </table>
-            <% } else {%>
-                <p style="text-align:center">No scores to display.</p>
+                <% } else { %>
+                    <p>No users found.</p>
                 <% } %>
+            </tbody>
+        </table>
+
     </section>
 
     <section id="ad">
