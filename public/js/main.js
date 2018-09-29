@@ -219,6 +219,9 @@ $(function () {
             var arr = JSON.parse(localStorage.jsSnakeGame);
             var html = "<tr id='table-header'><th>Username</th><th>Score</th><th>Rank</th></tr>";
             for (i = 0; i < arr.length; i++) {
+                if (i == 10) {
+                    break;
+                }
                 html += "<tr><td>" + arr[i].username + "</td><td>" + arr[i].score + "</td><td>" + (i+1) + "</td></tr>"
             }
             $('.table tbody').html(html);
