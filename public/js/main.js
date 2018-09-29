@@ -191,30 +191,6 @@ $(function () {
         return COLORS[index];
     }
 
-    let litDB = localStorage.litDB;
-
-
-    const updateTable = data => {
-        console.log(data);
-        console.log('detected table change');
-        if (localStorage.length > 0) {
-            for (i = 0; i < data.length; i++) {
-                $('tbody').append("<tr><td>" + data[i].username + "</td><td>" + data[i].score + "</td><td>" + (i + 1) + "</td></tr>");
-            }
-        } else {
-            console.log('did not detect any users in localstorage');
-            $table.append('<p style="text-align:center">No scores to display.</p>')
-        }
-    }
-
-
-    if (localStorage.length > 0) {
-        $table.css("display", "");
-    } else {
-        $table.css("display", "none")
-        $('#high-scores').append('<p style="text-align:center">No scores to display.</p>')
-    }
-
     // Keyboard events
 
     $window.keydown(event => {
@@ -238,8 +214,24 @@ $(function () {
         updateTyping();
     });
 
-    //detect new high score here
+    const updateTable = data => {
+        if (localStorage.jsSnakeGame) {
+            var arr = JSON.parse(localStorage.jsSnakeGame);
+            var html = "<tr id='table-header'><th>Username</th><th>Score</th><th>Rank</th></tr>";
+            for (i = 0; i < arr.length; i++) {
+                html += "<tr><td>" + arr[i].username + "</td><td>" + arr[i].score + "</td><td>" + (i+1) + "</td></tr>"
+            }
+            $('.table tbody').html(html);
+        } else {
+            console.log('did not detect any users in localstorage');
+            $('.table tbody').html('<tr><td>no users found</td></tr>');
+        }
+    }
 
+
+    setInterval(function(){ 
+        updateTable(localStorage);
+    }, 1000);    
 
     // Click events
 
@@ -291,11 +283,6 @@ $(function () {
     socket.on('stop typing', (data) => {
         removeChatTyping(data);
     });
-
-    //When a user has a new high score
-    socket.on('new highscore', data => {
-        updateTable(data);
-    })
 
     socket.on('disconnect', () => {
         log('you have been disconnected');

@@ -12,9 +12,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
-
-app.set('view engine', 'ejs');
-
 var numUsers = 0;
 
 let highScores = [];
@@ -31,22 +28,32 @@ io.on('connection', function (socket) {
     });
 
     socket.on('new highscore', data => {
-        console.log(highScores);
-        for (i = 0; i < highScores.length; i++) {
-            if (highScores[i].useraname != data.username) {
-                for (i in data) {
-                    var obj = {
-                        username: i,
-                        score: data[i]
+        if (highScores.length > 0) {
+            for (i = 0; i < highScores.length; i++) {
+                if (highScores[i].useraname != data.username) {
+                    for (i in data) {
+                        var obj = {
+                            username: i,
+                            score: data[i]
+                        }
+                        highScores.push(obj);
                     }
-                    highScores.push(obj);
+                    if (highScores.length > 1) {
+                        highScores.sort((a, b) => (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0));
+                    }
+                    socket.broadcast.emit('new highscore', highScores);
                 }
-                if (highScores.length > 1) {
-                    highScores.sort((a, b) => (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0));
-                }
-                socket.broadcast.emit('new highscore', highScores);
             }
+        } else {
+            var obj = {
+                username: data.username,
+                score: data.score
+            }
+            highScores.push(obj);
+            socket.broadcast.emit('new highscore', highScores);
         }
+        console.log("High Score list is currently: " + JSON.stringify(highScores));
+        
     })
 
     socket.on('add user', username => {
@@ -88,9 +95,8 @@ io.on('connection', function (socket) {
     });
 });
 
-app.get('/', (req, res) => {
-    console.log(`High Score list is currently: ${highScores}`);
-    res.render('index.ejs', {highScores:highScores});
+app.get('/', (req, res) => {    
+    res.sendFile('index.html');
 });
 
 server.listen(port, () => console.log(`Snake game listening on port ${port}!`));

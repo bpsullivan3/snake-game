@@ -327,28 +327,54 @@ SNAKE.Snake = SNAKE.Snake || (function () {
         * @method handleDeath
         */
         me.handleDeath = function () {
+            var socket = io();
             function recordScore() {
                 var username = $('#username-input').val();
                 var score = me.snakeLength;
                 var userExists = false;
 
                 if (username != "") {
-                    if (localStorage.length > 0) {
-                        for (i in localStorage) {
-                            if (username == i) {
+                    if (localStorage.jsSnakeGame) {
+                        //Detects a high score list
+                        let highScoreList = JSON.parse(localStorage.jsSnakeGame);
+
+                        //Detects excisting user
+                        for (i = 0; i < highScoreList.length; i++) {
+                            if (username == highScoreList[i].username) {
                                 userExists = true;
                             }
                         }
+
+                        //If existing user, determine if new high score
                         if (userExists) {
                             console.log("Existing user")
-                            for (i in localStorage) {
-                                if (username == i) {
-                                    if (score > localStorage[i]) {
-                                        alert(`Congrats ${i}! You have a new high score of ${score} compared to your previous of ${localStorage[i]}`);
+                            for (i = 0; i < highScoreList.length; i++) {
+                                if (username == highScoreList[i].username) {
+                                    if (score > highScoreList[i].score) {
+                                        alert(`Congrats ${highScoreList[i].username}! You have a new high score of ${score} compared to your previous of ${highScoreList[i].score}`);
                                         console.log(`${username} has new high score!`)
-                                        localStorage.setItem(username, score);
-                                        var socket = io();
+                                        
+                                        var obj = {
+                                            username: username,
+                                            score: score
+                                        }
 
+                                        let arr = JSON.parse(localStorage.getItem('jsSnakeGame'));
+
+                                        //remove current element
+                                        arr.splice(i,1);
+
+                                        //push element into array
+                                        arr.push(obj);
+                                       
+                                        //sort list here
+                                        arr.sort((a, b) => (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0));
+                                       
+                                        //stringify it
+                                        result = JSON.stringify(arr);
+
+                                        localStorage.setItem('jsSnakeGame', result);
+                                        console.log('object: ' + result)
                                         socket.emit('new highscore', localStorage);
                                     } else {
                                         console.log(`${username} did not have high score.`)
@@ -356,12 +382,36 @@ SNAKE.Snake = SNAKE.Snake || (function () {
                                 }
                             }
                         } else {
-                            console.log(`${username} added.`)
-                            localStorage.setItem(username, score);
+                        //If it does not detect new user, add it to list.
+                            console.log(`${username} added.`);
+                            var obj = {
+                                username: username,
+                                score: score
+                            }
+                            
+                            let arr = JSON.parse(localStorage.getItem('jsSnakeGame'));                            
+                            arr.push(obj);
+
+                             //check for duplicates
+
+                            //sort list here
+                            arr.sort((a, b) => (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0));
+                            
+                            result = JSON.stringify(arr);
+                            console.log('object: ' + result)
+                            localStorage.setItem('jsSnakeGame', result);
                         }
                     } else {
-                        console.log(`${username} added.`)
-                        localStorage.setItem(username, score);
+                        //First entry
+                        var obj = {
+                            username: username,
+                            score: score
+                        }
+                        let arr = [];
+                        arr.push(obj);
+                        result = JSON.stringify(arr);
+                        console.log('object: ' + result)
+                        localStorage.setItem('jsSnakeGame', result);
                     }
                 }
             }

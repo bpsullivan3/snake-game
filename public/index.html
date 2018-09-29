@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <head>
     <title>JavaScript Snake</title>
     <link rel=stylesheet id=style type=text/css href="css/main-snake.css" />
@@ -42,27 +41,10 @@
     <section id="high-scores">
         <h2>High Scores</h2>
         <table class="table">
-           
             <tbody>
-                <% if (highScores.length > 0) { %>
-                    <tr id="table-header">
-                            <th>Username</th>
-                            <th>Score</th>
-                            <th>Rank</th>
-                        </tr>
-                    <% for (i = 0; i < highScores.length; i++) { %>
-                    <tr>
-                        <td><%= highScores[i].username %></td>   
-                        <td><%= highScores[i].score %></td>    
-                        <td><%= ++i %></td>     
-                    <tr>
-                    <% } %>
-                <% } else { %>
-                    <p>No users found.</p>
-                <% } %>
+                    
             </tbody>
         </table>
-
     </section>
 
     <section id="ad">
@@ -79,8 +61,7 @@
         <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"
             title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
     </footer> -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/js/jquery-2.2.0.js"></script>
     <script type="text/javascript" src="./js/snake.js"></script>
     <script type="text/javascript">
         var mySnakeBoard = new SNAKE.Board({
