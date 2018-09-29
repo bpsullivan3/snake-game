@@ -16,6 +16,9 @@ $(function () {
     var $loginPage = $('#login-container'); // The login page
     var $chatPage = $('#chat-container'); // The chatroom page
 
+    var $table = $('#high-scores'); //the high score table
+    var $tableHeader = $('#table-header');
+
     // Prompt for setting a username
     var username;
     var connected = false;
@@ -211,8 +214,27 @@ $(function () {
         updateTyping();
     });
 
-    //detect new high score here
+    const updateTable = data => {
+        if (localStorage.jsSnakeGame) {
+            var arr = JSON.parse(localStorage.jsSnakeGame);
+            var html = "<tr id='table-header'><th>Username</th><th>Score</th><th>Rank</th></tr>";
+            for (i = 0; i < arr.length; i++) {
+                if (i == 10) {
+                    break;
+                }
+                html += "<tr><td>" + arr[i].username + "</td><td>" + arr[i].score + "</td><td>" + (i+1) + "</td></tr>"
+            }
+            $('.table tbody').html(html);
+        } else {
+            console.log('did not detect any users in localstorage');
+            $('.table tbody').html('<tr><td>no users found</td></tr>');
+        }
+    }
 
+
+    setInterval(function(){ 
+        updateTable(localStorage);
+    }, 1000);    
 
     // Click events
 
@@ -225,8 +247,6 @@ $(function () {
     $inputMessage.click(() => {
         $inputMessage.focus();
     });
-
-    // Socket events
 
     // Whenever the server emits 'login', log the login message
     socket.on('login', (data) => {
@@ -267,11 +287,6 @@ $(function () {
         removeChatTyping(data);
     });
 
-    //When a user has a new high score
-    socket.on('new high score', {
-
-    })
-
     socket.on('disconnect', () => {
         log('you have been disconnected');
     });
@@ -288,3 +303,4 @@ $(function () {
     });
 
 });
+

@@ -12,10 +12,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
-
-app.set('view engine', 'ejs');
-
 var numUsers = 0;
+
+let highScores = [];
 
 io.on('connection', function (socket) {
     var addedUser = false;
@@ -27,6 +26,35 @@ io.on('connection', function (socket) {
         });
         console.log(`Got the following data: ${data}`);
     });
+
+    socket.on('new highscore', data => {
+        if (highScores.length > 0) {
+            for (i = 0; i < highScores.length; i++) {
+                if (highScores[i].useraname != data.username) {
+                    for (i in data) {
+                        var obj = {
+                            username: i,
+                            score: data[i]
+                        }
+                        highScores.push(obj);
+                    }
+                    if (highScores.length > 1) {
+                        highScores.sort((a, b) => (a.score > b.score) ? -1 : ((b.score > a.score) ? 1 : 0));
+                    }
+                    socket.broadcast.emit('new highscore', highScores);
+                }
+            }
+        } else {
+            var obj = {
+                username: data.username,
+                score: data.score
+            }
+            highScores.push(obj);
+            socket.broadcast.emit('new highscore', highScores);
+        }
+        console.log("High Score list is currently: " + JSON.stringify(highScores));
+        
+    })
 
     socket.on('add user', username => {
         if (addedUser) return;
@@ -67,30 +95,9 @@ io.on('connection', function (socket) {
     });
 });
 
-let highScores = [];
-
-app.get('/', (req, res) => {
-    console.log(highScores);
-    res.render('index.ejs', { highScores: highScores });
-    highScores = [];
+app.get('/', (req, res) => {    
+    res.sendFile('index.html');
 });
-
-
-app.post('/', (req, res) => {
-
-    let data = req.body;
-    console.log(data);
-
-    if (data) {
-        for (i in data) {
-            highScores.push([i, Number(data[i])]);
-        }
-    }
-
-    highScores.sort((a, b) => { return b[1] - a[1] });
-    res.status(200).send(JSON.stringify(highScores));
-    
-})
 
 server.listen(port, () => console.log(`Snake game listening on port ${port}!`));
 

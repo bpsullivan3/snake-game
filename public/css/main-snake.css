@@ -73,7 +73,7 @@ button {
 #chat-container input {
     width: 250px;
     position: absolute;
-    bottom: -20px;
+    bottom: 0px;
     padding: 10px;
     font-family: helvetica, arial, sans-serif;
     font-size: 12px;
