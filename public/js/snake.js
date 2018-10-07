@@ -1,8 +1,3 @@
-/*
-JavaScript Snake
-By Patrick Gillespie
-http://patorjk.com/games/snake
-*/
 
 /**
 * @module Snake
