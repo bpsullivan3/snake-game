@@ -67,7 +67,7 @@ button {
     padding: 10px;
     overflow-y: scroll;
     font-size: 12px;
-    height: 470px;
+    height: 250px;
     display: none;
 }
 #chat-container input {
