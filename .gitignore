@@ -1,0 +1,8 @@
+# ignore mac directory file
+.DS_Store
+
+# ignore installed modules directory
+/node_modules
+
+# ignore all files in the mongo database folder
+/db/*
