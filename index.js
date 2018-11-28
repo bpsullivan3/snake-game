@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path');
 const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
+const highscoresRouter = require('./routes/highscores')
 
 const app = express();
 
@@ -11,6 +12,7 @@ const io = require('socket.io')(server);
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/api/highscores', highscoresRouter)
 
 var numUsers = 0;
 
