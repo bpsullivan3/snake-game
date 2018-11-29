@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "db": "mongod --port=27017 --dbpath=db --logpath=db/mongod.log --fork",
+    "stop": "mongo admin --eval='db.shutdownServer();'",
     "test": "cucumber-js"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "ejs": "^2.6.1",
     "express": "^4.16.3",
+    "mongodb": "^3.1.10",
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
