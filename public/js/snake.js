@@ -773,9 +773,9 @@ SNAKE.Board = SNAKE.Board || (function () {
             tmpElm.className = "snake-try-again-dialog";
 
             var tryAgainTxt = document.createElement("div");
-            tryAgainTxt.innerHTML = "Retro Snake<p></p>You died :(<p></p>";
+            tryAgainTxt.innerHTML = "You Died.<p></p>Press Play Again or Escape to Restart<p></p>";
             var tryAgainStart = document.createElement("button");
-            tryAgainStart.appendChild(document.createTextNode("Play Again?"));
+            tryAgainStart.appendChild(document.createTextNode("Play Again"));
 
             var reloadGame = function () {
                 tmpElm.style.display = "none";
@@ -792,7 +792,17 @@ SNAKE.Board = SNAKE.Board || (function () {
                 //     reloadGame();
                 // }
             };
+
+            var restartGameListener = function (evt) {
+                var keyNum = (evt.which) ? evt.which : evt.keyCode;
+                if (keyNum == 27)
+                {
+                    reloadGame()
+                }
+            };
             SNAKE.addEventListener(window, "keyup", kbTryAgainShortcut, true);
+            SNAKE.addEventListener(elmContainer, "keydown", restartGameListener, false)
+            SNAKE.addEventListener(window, "keydown", restartGameListener, false)
 
             SNAKE.addEventListener(tryAgainStart, "click", reloadGame, false);
             tmpElm.appendChild(tryAgainTxt);
@@ -981,6 +991,7 @@ SNAKE.Board = SNAKE.Board || (function () {
 
                     // This removes the listener added at the #listenerX line
                     SNAKE.removeEventListener(elmContainer, "keydown", myKeyListener, false);
+                    SNAKE.removeEventListener(window, "keydown", myKeyListener, false);
 
                     myKeyListener = function (evt) {
                         if (!evt) var evt = window.event;
@@ -1000,6 +1011,7 @@ SNAKE.Board = SNAKE.Board || (function () {
                         return false;
                     };
                     SNAKE.addEventListener(elmContainer, "keydown", myKeyListener, false);
+                    SNAKE.addEventListener(window, "keydown", myKeyListener, false);
 
                     mySnake.rebirth();
                     mySnake.handleArrowKeys(keyNum);
@@ -1015,6 +1027,7 @@ SNAKE.Board = SNAKE.Board || (function () {
 
             // Search for #listenerX to see where this is removed
             SNAKE.addEventListener(elmContainer, "keydown", myKeyListener, false);
+            SNAKE.addEventListener(window, "keydown", myKeyListener, false);
         };
 
         /**
