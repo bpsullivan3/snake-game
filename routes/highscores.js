@@ -4,7 +4,7 @@ const router = Router();
 
 mongo
     .connect(
-        "mongodb://localhost:27017",
+        "mongodb+srv://snakeapp:snakepass@cluster0-5kgg2.mongodb.net/highscores?retryWrites=true",
         { useNewUrlParser: true }
     )
     .then(client => client.db("snake-game"))
