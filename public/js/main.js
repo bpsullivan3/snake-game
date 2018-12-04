@@ -10,8 +10,11 @@ $(function () {
     // Initialize variables
     var $window = $(window);
     var $usernameInput = $('#username-input'); // Input for username
+    var $passwordInput = $('#password-input'); //Input for password
+    var $enterPasswordText = $('#password-container')
     var $messages = $('.messages'); // Messages area
     var $inputMessage = $('#message-input'); // Input message input box
+    var $loginButton = $('#login-button-confirm');
 
     var $loginPage = $('#login-container'); // The login page
     var $chatPage = $('#chat-container'); // The chatroom page
@@ -21,12 +24,16 @@ $(function () {
 
     // Prompt for setting a username
     var username;
+    var password;
     var connected = false;
     var typing = false;
     var lastTypingTime;
     var $currentInput = $usernameInput.focus();
+    var $passwordInput = $passwordInput.focus();
 
     var socket = io();
+
+
 
     const addParticipantsMessage = (data) => {
         var message = '';
@@ -52,6 +59,11 @@ $(function () {
             // Tell the server your username
             socket.emit('add user', username);
         }
+    }
+
+    const setPassword = () => {
+        password = cleanInput($passwordInput.val().trim());
+
     }
 
     // Sends a chat message
@@ -192,9 +204,42 @@ $(function () {
     }
 
     // Keyboard events
+    $passwordInput.keydown(event =>
+    {
+        $passwordInput.focus();
 
-    $window.keydown(event => {
+        if (event.which === 13) {
+            if (username) {
+                sendMessage();
+                socket.emit('stop typing');
+                typing = false;
+            } else {
+                setUsername();
+                $passwordInput.fadeOut();
+                $loginButton.fadeOut();
+                $enterPasswordText.fadeOut();
+            }
+        }
+    });
+
+    $loginButton.click(event =>
+    {
+        if (username) {
+            sendMessage();
+            socket.emit('stop typing');
+            typing = false;
+        } else {
+            setUsername();
+            $passwordInput.fadeOut();
+            $loginButton.fadeOut();
+            $enterPasswordText.fadeOut();
+        }
+    });
+
+
+    $usernameInput.keydown(event => {
         // Auto-focus the current input when a key is typed
+
         if (!(event.ctrlKey || event.metaKey || event.altKey)) {
             $currentInput.focus();
         }
@@ -206,6 +251,29 @@ $(function () {
                 typing = false;
             } else {
                 setUsername();
+                $passwordInput.fadeOut();
+                $loginButton.fadeOut();
+                $enterPasswordText.fadeOut();
+            }
+        }
+    });
+
+    $inputMessage.keydown(event =>
+    {
+        if (!(event.ctrlKey || event.metaKey || event.altKey)) {
+            $currentInput.focus();
+        }
+        // When the client hits ENTER on their keyboard
+        if (event.which === 13) {
+            if (username) {
+                sendMessage();
+                socket.emit('stop typing');
+                typing = false;
+            } else {
+                setUsername();
+                $passwordInput.fadeOut();
+                $loginButton.fadeOut();
+                $enterPasswordText.fadeOut();
             }
         }
     });
