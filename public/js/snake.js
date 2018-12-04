@@ -759,7 +759,7 @@ SNAKE.Board = SNAKE.Board || (function () {
                 //     loadGame();
                 // }
             };
-            SNAKE.addEventListener(window, "keyup", kbShortcut, false);
+            //SNAKE.addEventListener(window, "keyup", kbShortcut, false);
             SNAKE.addEventListener(welcomeStart, "click", loadGame, false);
 
             tmpElm.appendChild(welcomeTxt);
@@ -802,7 +802,7 @@ SNAKE.Board = SNAKE.Board || (function () {
             };
             SNAKE.addEventListener(window, "keyup", kbTryAgainShortcut, true);
             SNAKE.addEventListener(elmContainer, "keydown", restartGameListener, false)
-            SNAKE.addEventListener(window, "keydown", restartGameListener, false)
+            //SNAKE.addEventListener(window, "keydown", restartGameListener, false)
 
             SNAKE.addEventListener(tryAgainStart, "click", reloadGame, false);
             tmpElm.appendChild(tryAgainTxt);
@@ -1011,7 +1011,7 @@ SNAKE.Board = SNAKE.Board || (function () {
                         return false;
                     };
                     SNAKE.addEventListener(elmContainer, "keydown", myKeyListener, false);
-                    SNAKE.addEventListener(window, "keydown", myKeyListener, false);
+                    //SNAKE.addEventListener(window, "keydown", myKeyListener, false);
 
                     mySnake.rebirth();
                     mySnake.handleArrowKeys(keyNum);
@@ -1027,7 +1027,7 @@ SNAKE.Board = SNAKE.Board || (function () {
 
             // Search for #listenerX to see where this is removed
             SNAKE.addEventListener(elmContainer, "keydown", myKeyListener, false);
-            SNAKE.addEventListener(window, "keydown", myKeyListener, false);
+            //SNAKE.addEventListener(window, "keydown", myKeyListener, false);
         };
 
         /**
