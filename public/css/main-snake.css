@@ -232,9 +232,10 @@ a.snake-link:hover {
 }
 
 #ad {
-    width: 300px;
+    width: 275px;
+    height: 500px;
+    padding-top: 15px;
     float: right;
-    background-color:lightgreen;
     height: 200px;
 }
 
