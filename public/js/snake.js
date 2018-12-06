@@ -334,6 +334,11 @@ SNAKE.Snake = SNAKE.Snake || (function () {
                 var userExists = false;
 
                 if (username != "") {
+                    var data = {
+                        username: username,
+                        score: score
+                    }
+                    socket.emit('game over', data);
                     if (localStorage.jsSnakeGame) {
                         //Detects a high score list
                         let highScoreList = JSON.parse(localStorage.jsSnakeGame);
@@ -375,7 +380,7 @@ SNAKE.Snake = SNAKE.Snake || (function () {
 
                                         localStorage.setItem('jsSnakeGame', result);
                                         console.log('object: ' + result)
-                                        socket.emit('new highscore', localStorage);
+                                        socket.emit('new highscore', result);
                                     } else {
                                         console.log(`${username} did not have high score.`)
                                     }
