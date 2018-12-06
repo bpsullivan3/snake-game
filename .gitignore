@@ -6,3 +6,6 @@
 
 # ignore all files in the mongo database folder
 /db/*
+
+# ignore vs code configuration folder
+/.vs/*

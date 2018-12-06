@@ -2,8 +2,6 @@ const express = require('express')
 const path = require('path');
 const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
-const highscoresRouter = require('./routes/highscores')
-
 const app = express();
 
 const server = require('http').createServer(app);
@@ -12,10 +10,11 @@ const io = require('socket.io')(server);
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', express.static(path.join(__dirname, 'public')));
-app.use('/api/highscores', highscoresRouter)
+
+var mongo = require('mongodb').MongoClient;
+var url = "mongodb+srv://snakeapp:snakepass@cluster0-5kgg2.mongodb.net/highscores?retryWrites=true";
 
 var numUsers = 0;
-
 let highScores = [];
 
 io.on('connection', function (socket) {
@@ -26,9 +25,23 @@ io.on('connection', function (socket) {
             username: socket.username,
             message: data
         });
-        console.log(`Got the following data: ${data}`);
+        console.log(`Got the following data: ${socket.username}: "${data}"`);
     });
 
+    socket.on('game over', data => {
+        console.log(`${data.username} got a score of ${data.score}`);
+        mongo.connect(url, { useNewUrlParser: true })
+            .then(client => client.db("snake-game"))
+            .then(db => db.collection("highscores"))
+            .then(collection => {
+                collection
+                    .updateOne(
+                        { username : data.username },
+                        { $push: { highscores: data.score } },
+                        { upsert: true }
+                    )   
+            });
+    });
     socket.on('new highscore', data => {
         if (highScores.length > 0) {
             for (i = 0; i < highScores.length; i++) {
