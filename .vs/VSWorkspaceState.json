@@ -1,9 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\models",
     "\\public",
     "\\public\\css"
   ],
-  "SelectedNode": "\\public\\css\\main-snake.css",
+  "SelectedNode": "\\public\\index.html",
   "PreviewInSolutionExplorer": false
 }
